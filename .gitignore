@@ -1,5 +1,12 @@
+*~
 .DS_Store
-jia
-.vscode/c_cpp_properties.json
-fundot.dSYM/Contents/Info.plist
-fundot.dSYM/Contents/Resources/DWARF/fundot
+.vscode
+.clang-format
+.clangd
+compile_commands.json
+fundot.dSYM
+obj
+test
+main
+*.fd
+fundot

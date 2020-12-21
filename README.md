@@ -1,72 +1,82 @@
 # Fundot
 
-Fundot Programming Language
+Fundot is a  programming language that treats "code as data". Inspired by both Lisp and JSON, Fundot aims to provide homoiconicity, but with more readability and functionality.
 
-## Background
+## Installation
 
-As someone who has always been interested in inventing a new programming language,
-I started this project, Fundot, to make my idea come true.
-Inspired by Lisp, Fundot is a functional programming language,
-but it does not need parenthesis, "(" and ")", which is the biggest difference between Fundot and Lisp.
-Instead, Fundot uses capital letters, "A" to "Z", and dot, ".", as we normally do in English,
-to indicate the start and end of a function. A FundotDOC.md file is also included in this repository, which describes the language features of Fundot in details.
+### Linux, macOS, and other Unix-like systems
 
-## Install
+Go to the directory where you want to build Fundot, and enter the following commands. Fundot will be built and then moved to `/usr/local/bin`, where local programs are normally installed. However, if you want to run Fundot only in the cloned directory, then please ignore the last line of commands.
 
-Clone or download this repository and compile the src files.
-You can use the following command in terminals of Unix, macOS, Linux, and any other Unix-like systems under this repository.
-
+    git clone https://github.com/Fundot/fundot.git
+    cd fundot
     make
-**Note: Any following code in this README so far is for Unix-like systems, but we will definitely support Windows in the future.**
+    sudo mv fundot /usr/local/bin
+### Windows
+
+Fundot should be able to run on Windows, but we have not tested the new versions yet. If you are interested, feel free to git clone the repository and compile the source. We will try to provide a new way to build Fundot by CMake so that Windows users are able to install Fundot easily.
+
+**Note: Any following code in this README assumes that the binary has already been added to PATH.**
 
 ## Usage
 
-This program is an underdeveloped parser of Fundot programming language that contains the REPL (read-eval-print Loop) mode and the file execution mode.
+This project is an evaluator of Fundot programming language, which contains the REPL (Read-Eval-Print Loop) mode and the file execution mode.
 
-For REPL mode, simply access Fundot in the terminal under this repository.
+For REPL mode, simply enter `fundot` in the terminal.
 
-    $ ./fundot
-    Fundot is here.
-After displaying the information from Fundot, you can call one function a time, but you may call any functions inside that function, until you call the Exit function.
+    fundot
+After displaying `>>> `, you may enjoy Fundot until you call `quit`.
 
-    $ ./fundot
-    Fundot is here.
-    Add 1 2.
-    3
-    Add
-        Add 1 2.
-        Add 1 2..
-    6
-    Def Sum-of-two-numbers a b. Add a b..
-    Def x 1.
-    Sum-of-two-numbers x
-        Sum-of-two-numbers x
-            Sum-of-two-numbers
-                Sum-of-two-numbers x 2.
-                Sum-of-two-numbers x 2....
-    8
-    Exit.
-For file execution mode, access Fundot from terminal following with an argument, the name of a .Fundot file. For example, assume you have a file named test.Fundot that contains the following content:
+```Fundot
+>>> mike: {name: "Mike", age: 19}
+{ name: "Mike", age: 19, }
+>>> mike.age
+19
+>>> (defun square (x) (mul x x))
+{ type: function, params: ( x ), body: ( mul x x ), }
+>>> (square 4)
+16
+>>> mike.age: (add mike.age 16)
+35
+>>> (quit)
+```
+For file execution mode, enter `fundot` followed by the name of the source file. Suppose we have a source file named `example.fd` that contains the following code.
 
-    Block
-        Def Sum-of-two-numbers a b. Add a b..
-        Def x 1.
-        Sum-of-two-numbers x
-            Sum-of-two-numbers x
-                Sum-of-two-numbers
-                    Sum-of-two-numbers x 2.
-                    Sum-of-two-numbers x 2.....
-Then if you enter the following code in terminal under this repository, an output 8 will be displayed after the information of Fundot.
+```Fundot
+(defun square (x) (mul x x))
 
-    $ ./fundot test.fundot
-    Fundot is here.
-    8
-**Note: So far, this parser has not been stable, and huge changes may occur in each new commit.**
+(defun abs (x)
+  (if (comp< x 0)
+    (sub 0 x)
+    x))
+
+(defun sqrt (x) [
+  root: x,
+  precision: 1e-9,
+  (while (comp> (abs (sub x (square root))) precision)
+    root: (div (add root (div x root)) 2)),
+  root])
+
+(print (sqrt 1))
+(print (sqrt 2))
+(print (sqrt 3))
+(print (sqrt 4))
+(print (sqrt 65536))
+```
+Then if we enter `fundot example.fd` in the terminal, we will get the output shown below.
+
+    1
+    1.41421
+    1.73205
+    2
+    256
+**Note: So far, Fundot has not been stable, and huge changes may occur in each new commit.**
 
 ## Contributing
 
-Contributions are welcome.
+Contributions are welcome. The guideline is coming soon.
 
 ## License
 
-GPL-3.0 © Fundotcheng Huang
+MIT License © Jiacheng Huang
+
